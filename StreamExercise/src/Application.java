@@ -1,5 +1,3 @@
-import sun.applet.resources.MsgAppletViewer_ja;
-
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
