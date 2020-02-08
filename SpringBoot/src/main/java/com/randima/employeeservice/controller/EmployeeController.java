@@ -1,6 +1,6 @@
-package controller;
+package com.randima.employeeservice.controller;
 
-import model.Employee;
+import com.randima.employeeservice.model.Employee;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

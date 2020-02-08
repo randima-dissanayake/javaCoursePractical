@@ -1,4 +1,4 @@
-package model;
+package com.randima.employeeservice.model;
 
 import java.util.ArrayList;
 import java.util.List;
