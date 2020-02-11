@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/services")
 public class AllocationController {
+    @Autowired
     AllocationService allocationService;
 
     @RequestMapping(value = "/allocation", method = RequestMethod.POST)
@@ -23,7 +24,7 @@ public class AllocationController {
         return allocationService.getAllAllocations();
     }
 
-    @RequestMapping(value = "allocation/findByEmployeeId/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "allocation/{id}", method = RequestMethod.GET)
     public List<Allocation> getAllocationByEmployeeId(@PathVariable Integer id) {
         return allocationService.getAllocationById(id);
     }
