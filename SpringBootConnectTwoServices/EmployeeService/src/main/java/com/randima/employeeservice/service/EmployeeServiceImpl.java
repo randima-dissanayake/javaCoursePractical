@@ -42,8 +42,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         Optional<Employee> employee= employeeRepository.findById(id);
         if (employee.isPresent()){
             Allocation[] allocations= fetchAllocation(employee.get());
-            employee.setAllocations(allocations);
-            return employee;
+            employee.get().setAllocations(allocations);
+            return employee.get();
         }
         return null;
     }
@@ -51,8 +51,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Allocation[] fetchAllocation(Employee employee) {
         HttpHeaders httpHeaders=new HttpHeaders();
-        HttpEntity<String> httpEntity=new HttpEntity<>("hdskjhsk",httpHeaders);
-        ResponseEntity<Allocation[]> responseEntity=restTemplate.exchange("http://localhost:8181/services/allocation"+employee.getId(),
+        HttpEntity<String> httpEntity=new HttpEntity<>("",httpHeaders);
+        ResponseEntity<Allocation[]> responseEntity=restTemplate.exchange("http://localhost:8181/services/allocation/"+employee.getId(),
                 HttpMethod.GET,httpEntity,Allocation[].class);
         return responseEntity.getBody();
     }
