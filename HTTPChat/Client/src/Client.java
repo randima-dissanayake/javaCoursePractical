@@ -6,31 +6,51 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class Client {
+    static String address;
+    static String userName;
     public static void main(String[] args) throws IOException {
-        System.out.println("Enter command:");
+        URL url=null;
 
-        Scanner scanner=new Scanner(System.in);
-        String line = scanner.nextLine();
+        while (true) {
+            System.out.println("Enter command:");
 
-        String[] tokens= line.split(" ");
+            Scanner scanner = new Scanner(System.in);
+            String line = scanner.nextLine();
 
-        if ("connect".equalsIgnoreCase(tokens[0])){
-            String name = line.substring(line.indexOf("as ")+1);
-            URL url=new URL("http://localhost:8000/register?name="+name);
-            HttpURLConnection connection=(HttpURLConnection)url.openConnection();
+            String[] tokens = line.split(" ");
+
+            if ("connect".equalsIgnoreCase(tokens[0])) {
+                address=tokens[1];
+                userName = line.substring(line.indexOf("as") + 3);
+                url = new URL("http://" + address + "/register?name=" + userName);
+
+            } else if ("list".equalsIgnoreCase(tokens[0])) {
+                url = new URL("http://" + address + "/list");
+
+            } else if ("send".equalsIgnoreCase(tokens[0])) {
+                String receiver =line.substring(line.indexOf(">")+1);
+                System.out.println("reciever"+receiver);
+                String msg = line.substring(line.indexOf("s")+3);
+                System.out.println("msg"+msg);
+                url = new URL("http://" + address + "/send?message="+msg+"&receiver="+receiver+"&sender="+userName);
+            } else if("exit".equalsIgnoreCase(tokens[0])){
+                break;
+            }
+
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line1;
-            while ((line1=reader.readLine())!=null){
+            while ((line1 = reader.readLine()) != null) {
                 System.out.println(line1);
             }
 
             reader.close();
+
+
         }
-
-
-
 
     }
 }
