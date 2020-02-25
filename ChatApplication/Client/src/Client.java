@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Client {
@@ -8,6 +9,7 @@ public class Client {
     private OutputStream serverOut;
     private InputStream serverIn;
     private BufferedReader bufferedIn;
+//    private ArrayList<UserStatusListner> userStatusListners=new ArrayList<>();
 
     public Client(String serverName, int port) {
         this.serverName = serverName;
@@ -22,7 +24,9 @@ public class Client {
         if (!client.connect()){
             System.err.println("Connect failed");
         } else {
-            if (client.login(connectionDetails)){
+            boolean u = client.login(connectionDetails);
+            System.out.println("oioooi"+u);
+            if (u){
                 System.out.println("Connected successful");
             } else {
                 System.err.println("Connect fails");
@@ -32,18 +36,45 @@ public class Client {
 
     private boolean login(String connectionDetails) throws IOException {
         System.out.println("iiiiiiiiii");
-        serverOut.write(connectionDetails.getBytes());
-        String response=bufferedIn.readLine();
+        String msg = "connect as randima" ;
+        serverOut.write(msg.getBytes());
+        String response=new BufferedReader(new InputStreamReader(serverIn)).readLine();
         System.out.println("response " + response);
         if ("login".equalsIgnoreCase(response)){
             System.out.println("aaaaaaaaa");
+            startMsgReader();
             return true;
         } else {
             return false;
         }
     }
 
-    private boolean connect() {
+    private void startMsgReader() {
+        Thread thread=new Thread(){
+            @Override
+            public void run(){
+                readMsgLoop();
+            }
+        };
+        thread.start();
+    }
+
+    private void readMsgLoop(){
+        try {
+            String line;
+            while ((line=bufferedIn.readLine())!=null){
+                String[] token = line.split(" ");
+                if (token !=null && token.length>0) {
+                    String cmd = token[0];
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+        private boolean connect() {
         try {
             Socket socket=new Socket(serverName,port);
             this.serverOut=socket.getOutputStream();

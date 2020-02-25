@@ -59,6 +59,8 @@ public class Server
 
         }
     }
+
+
 }
 
 // ClientHandler class
@@ -81,6 +83,10 @@ class ClientHandler implements Runnable
         this.isloggedin=true;
     }
 
+    public Vector<ClientHandler> showUserList(){
+        return Server.ar;
+    }
+
     @Override
     public void run() {
 
@@ -97,6 +103,11 @@ class ClientHandler implements Runnable
                 if(received.equals("logout")){
                     this.isloggedin=false;
                     this.s.close();
+                    break;
+                }
+
+                if(received.equals("list")){
+                    showUserList();
                     break;
                 }
 

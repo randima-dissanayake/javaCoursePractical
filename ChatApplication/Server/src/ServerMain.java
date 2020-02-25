@@ -1,16 +1,25 @@
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Vector;
 
 public class ServerMain {
 
     public static void main(String[] args){
-        System.out.println("hhhhhhhhhhhhhh");
+
         int port = 8818;
-        Server server=new Server(port);
-        server.start();
+        try {
+            ServerSocket serverSocket = new ServerSocket(port);
+            while (true){
+                System.out.println("hhhhhhhhhhhhhh");
+                Socket clientSocket = serverSocket.accept();
+                ServerWorker serverWorker = new ServerWorker(clientSocket);
+                serverWorker.start();
+            }
+
+        } catch (
+                IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
