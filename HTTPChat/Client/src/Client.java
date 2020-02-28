@@ -31,14 +31,12 @@ public class Client {
 
             } else if ("send".equalsIgnoreCase(tokens[0])) {
                 Matcher matcher2 = Pattern.compile("send (?<msg>\\w*) -> (?<rec>\\w*)").matcher(line);
-                String message = matcher2.group("msg");
-                String receiver = matcher2.group("rec");
-//                String receiver =line.substring(line.indexOf(">")+1);
-                System.out.println("reciever"+receiver);
-//                String start = StringUtils.substringBefore(filename, ".");
-//                String msg = line.substring(line.indexOf("s")+3);
-                System.out.println("msg"+message);
-                url = new URL("http://" + address + "/send?message="+message+"&receiver="+receiver+"&sender="+userName);
+                if(matcher2.find()){
+                    String message = matcher2.group("msg");
+                    String receiver = matcher2.group("rec");
+                    url = new URL("http://" + address + "/send?message="+message+"&receiver="+receiver+"&sender="+userName);
+                }
+
             } else if("exit".equalsIgnoreCase(tokens[0])){
                 break;
             }

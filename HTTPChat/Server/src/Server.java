@@ -30,27 +30,32 @@ public class Server {
     }
 
     private static void sendMsg(HttpExchange httpExchange) throws IOException {
-        URI registeredURIMSG=httpExchange.getRequestURI();
-        String query=registeredURIMSG.getRawQuery();
-        Matcher matcher2 = Pattern.compile("message=(?<msg>\\w*)&receiver=(?<rec>\\w*)&sender=(?<sen>\\w*)").matcher(query);
-        String response = null;
-        if (matcher2.find()){
-            String message = matcher2.group("msg");
-            String receiver = matcher2.group("rec");
-            String sender = matcher2.group("sen");
+        try {
+            URI requestedUri = httpExchange.getRequestURI();
+            String query = requestedUri.getRawQuery();
+            Matcher matcher2 = Pattern.compile("message=(?<msg>\\w*)&receiver=(?<rec>\\w*)&sender=(?<sen>\\w*)").matcher(query);
+            String response = "Default";
+            if (matcher2.find()){
+                String message = matcher2.group("msg");
+                String receiver = matcher2.group("rec");
+                String sender = matcher2.group("sen");
 
-            if (userList.keySet().contains(receiver)){
-                userList.put(receiver,message);
-            } else {
-                response="No such a user";
+                if (userList.keySet().contains(receiver)){
+                    userList.put(receiver,message);
+                } else {
+                    response="No such a user";
+                }
+
             }
-            
+
+            httpExchange.sendResponseHeaders(200,response.getBytes().length);
+            OutputStream outputStream= httpExchange.getResponseBody();
+            outputStream.write(response.getBytes());
+            outputStream.close();
+        } catch (Exception e){
+            e.printStackTrace();
         }
 
-        httpExchange.sendResponseHeaders(200,response.getBytes().length);
-        OutputStream outputStream= httpExchange.getResponseBody();
-        outputStream.write(response.getBytes());
-        outputStream.close();
 
         
        
