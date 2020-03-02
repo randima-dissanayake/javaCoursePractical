@@ -11,6 +11,6 @@ public class UserConfiguration extends GlobalAuthenticationConfigurerAdapter {
     PasswordEncoder passwordEncoder= PasswordEncoderFactories.createDelegatingPasswordEncoder();
     @Override
     public void init(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("randima").password(passwordEncoder.encode("pin")).roles("Manager","Operator").authorities("CAN_READ","CAN_WRITE").and().withUser("randima").password(passwordEncoder.encode("pin")).roles("Manager","Operator").authorities("CAN_READ");
+        auth.inMemoryAuthentication().withUser("randima").password(passwordEncoder.encode("pin")).roles("Manager","Operator").authorities("CAN_READ","CAN_WRITE").and().withUser("primali").password(passwordEncoder.encode("pin")).roles("Operator").authorities("CAN_READ");
     }
 }
